@@ -1,5 +1,10 @@
-function App() {
-  return <div className="App"></div>;
-}
+import { Route, Routes } from "react-router-dom";
+import BoardPage from "./pages/BoardPage";
 
-export default App;
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<BoardPage />} />
+    </Routes>
+  );
+}
