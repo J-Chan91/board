@@ -17,9 +17,11 @@ export default function BoardItem({ title, author }: BoardItemProps) {
 
 const Container = styled.li`
   padding: 10px 10px;
+  height: 50px;
   margin: 5px 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
   font-size: 15px;
   transition: 0.3s;
