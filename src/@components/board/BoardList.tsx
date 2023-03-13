@@ -1,35 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { getBoardList } from "../../api/boardAPI";
-import { Action } from "../../pages/boardPage/reducer";
 import { BOARD_TYPE } from "../../types/boardTypes";
-import { BoardPageReducerType } from "../../types/reducerType";
 import BoardItem from "./BoardItem";
 
 type BoardListProps = {
   board: BOARD_TYPE[];
-  state: BoardPageReducerType;
-  dispatch: React.Dispatch<Action>;
+  page: number;
+  isEnd: boolean;
+  getMoreBoardList: (page: number) => Promise<void>;
 };
 
-export default function BoardList({ board, state, dispatch }: BoardListProps) {
+export default function BoardList({
+  board,
+  page,
+  isEnd,
+  getMoreBoardList,
+}: BoardListProps) {
   const observerRef = useRef<HTMLDivElement>(null);
-  const [isEnd, setIsEnd] = useState(false);
 
   const onIntersection = async (
     [entry]: IntersectionObserverEntry[],
     observer: IntersectionObserver
   ) => {
     if (entry.isIntersecting) {
-      const result = await getBoardList(state.page);
-
-      if (result.length < 10) setIsEnd(true);
-
-      dispatch({
-        type: "MORE_LIST",
-        board: [...state.board, ...result],
-        page: state.page + 1,
-      });
+      getMoreBoardList(page + 1);
     }
   };
 
@@ -48,7 +42,7 @@ export default function BoardList({ board, state, dispatch }: BoardListProps) {
     }
 
     return () => observer?.disconnect();
-  }, [state.page]);
+  }, [page]);
 
   return (
     <Container>

@@ -1,16 +1,20 @@
-import { useEffect, useReducer, useRef, useState } from "react";
 import styled from "styled-components";
 import BoardList from "../../@components/board/BoardList";
 import Template from "../../@components/common/Template";
-import { boardReducer, initBoardState } from "./reducer";
+import useBoardList from "../../hooks/useBoardList";
 
 export default function BoardPage() {
-  const [state, dispatch] = useReducer(boardReducer, initBoardState);
+  const { state, isEnd, getMoreBoardList } = useBoardList();
 
   return (
     <Template>
       <Container>
-        <BoardList board={state.board} state={state} dispatch={dispatch} />
+        <BoardList
+          board={state.board}
+          page={state.page}
+          isEnd={isEnd}
+          getMoreBoardList={getMoreBoardList}
+        />
       </Container>
     </Template>
   );
